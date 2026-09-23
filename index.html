@@ -199,6 +199,17 @@
             background: linear-gradient(90deg, transparent, #f06292, transparent);
         }
 
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+            margin: 0 auto 15px;
+            display: block;
+        }
+
         .message {
             font-size: 1.05rem;
             line-height: 1.9;
@@ -285,9 +296,10 @@
 
         .footer {
             margin-top: 30px;
-            font-size: 0.85rem;
+            font-size: 2.8rem;
             color: #ad1457;
             opacity: 0.8;
+            line-height: 1;
         }
 
         .sender-section {
@@ -528,6 +540,61 @@
             100% { transform: translateX(-300px) scaleX(-1); }
         }
 
+        /* Music Player */
+        .music-player {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 30px auto 10px;
+            padding: 12px 28px;
+            max-width: 300px;
+            background: linear-gradient(135deg, #ec407a, #f06292);
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .music-player:hover {
+            transform: scale(1.04);
+            box-shadow: 0 14px 30px rgba(233, 30, 99, 0.55);
+        }
+
+        .music-player .music-disc {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #880e4f 0%, #f8bbd0 60%, #ec407a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .music-player .music-label {
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .music-player .music-status {
+            font-size: 1.1rem;
+        }
+
+        .music-player.playing .music-disc {
+            animation: spinDisc 3s linear infinite;
+        }
+
+        @keyframes spinDisc {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .card {
@@ -537,11 +604,13 @@
             }
             h1 { font-size: 1.5rem; }
             .name { font-size: 1.8rem; }
+            .profile-photo { width: 120px; height: 120px; border-width: 3px; }
             .event-title { font-size: 0.85rem; padding: 12px 22px; }
             .flower-svg { transform: scale(0.7); }
             .train-wrapper svg { width: 150px; height: 40px; }
             .train-wrapper-2 svg { width: 120px; height: 32px; }
             .train-icon-row .train-emoji { font-size: 1.4rem; }
+            .music-player { max-width: 260px; padding: 10px 20px; }
         }
     </style>
 </head>
@@ -822,11 +891,11 @@
                 <div class="track-line"></div>
             </div>
 
-            <p class="message">Dengan penuh kebanggaan dan kebahagiaan, kami mengucapkan selamat atas keberhasilan Anda menyelesaikan Seminar Kerja Praktik.</p>
+            <img class="profile-photo" src="images.jpeg" alt="Foto Nova Nirmala Putri">
 
             <div class="name">Nova Nirmala Putri</div>
 
-            <div class="event-title">Seminar Kerja Praktik 2026</div>
+            <div class="event-title">Teknik Perkeretaapian '23</div>
 
             <div class="train-icon-row">
                 <span class="train-emoji">🚃</span>
@@ -849,20 +918,26 @@
 
             <div class="wishes">
                 <p>
-                    "Perjalanan seribu mil dimulai dari satu langkah kecil.<br>
-                    Dan hari ini, Anda telah melangkah dengan penuh keberanian dan prestasi."
+                    Keep going<br>
+                    Sempro coming<br>
+                    🙂‍↔️😝🥳
                 </p>
             </div>
 
             <div class="divider"></div>
 
-            <div class="sender-section">
-                <p class="sender-from">Dari:</p>
-                <p class="sender-name">Nabila Ramadhani Mujahidin</p>
-                <p class="sender-prodi">Teknik Informatika</p>
+            <div class="music-player" id="musicBtn">
+                <span class="music-disc" id="musicDisc">🎵</span>
+                <span class="music-label" id="musicLabel">Putar Musik</span>
+                <span class="music-status" id="musicStatus">▶</span>
             </div>
 
-            <p class="footer">Dengan hangat & penuh doa</p>
+            <div class="sender-section">
+                <p class="sender-from">Created by:</p>
+                <p class="sender-name">Nabila Cantik</p>
+            </div>
+
+            <p class="footer">🖕🏻🖕🏻🖕🏻</p>
             <div class="train-icon-row" style="margin-top: 12px;">
                 <span style="font-size:1.4rem;">🌸</span>
                 <span style="font-size:1.8rem;" class="train-emoji">🚂</span>
@@ -870,6 +945,59 @@
             </div>
         </div>
     </div>
+
+<!-- Music Backsound -->
+    <audio id="backsound" loop preload="auto">
+        <source src="backsound.mp3" type="audio/mpeg">
+        <source src="backsound.m4a" type="audio/mp4">
+    </audio>
+
+    <script>
+        const musicBtn = document.getElementById('musicBtn');
+        const musicDisc = document.getElementById('musicDisc');
+        const musicLabel = document.getElementById('musicLabel');
+        const musicStatus = document.getElementById('musicStatus');
+        const audio = document.getElementById('backsound');
+        let isPlaying = false;
+
+        function setPlaying(state) {
+            isPlaying = state;
+            musicBtn.classList.toggle('playing', state);
+            musicDisc.textContent = state ? '🎶' : '🎵';
+            musicLabel.textContent = state ? 'Sedang Memutar' : 'Putar Musik';
+            musicStatus.textContent = state ? '⏸' : '▶';
+        }
+
+        function tryPlay() {
+            if (isPlaying) return;
+            const p = audio.play();
+            if (p) {
+                p.then(() => {
+                    setPlaying(true);
+                    document.removeEventListener('click', tryPlay);
+                    document.removeEventListener('touchstart', tryPlay);
+                }).catch(() => setPlaying(false));
+            } else {
+                setPlaying(true);
+                document.removeEventListener('click', tryPlay);
+                document.removeEventListener('touchstart', tryPlay);
+            }
+        }
+
+        tryPlay();
+        document.addEventListener('click', tryPlay);
+        document.addEventListener('touchstart', tryPlay);
+
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (isPlaying) {
+                audio.pause();
+                setPlaying(false);
+            } else {
+                tryPlay();
+            }
+        });
+    </script>
 
 </body>
 </html>
